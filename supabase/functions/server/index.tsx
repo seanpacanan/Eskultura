@@ -237,6 +237,7 @@ app.use(
   "/*",
   cors({
     origin: [
+      "https://es-kultura.vercel.app",
       "https://nqpjoquopcbvhrolwirg.supabase.co",
       "http://localhost:5173",
       "http://localhost:4173",
@@ -249,12 +250,12 @@ app.use(
 );
 
 // ─── Health ───────────────────────────────────────────────────────────────────
-app.get("/make-server-b49a1e6e/health", (c) =>
+app.get("/health", (c) =>
   c.json({ status: "ok", service: "Eskultura Backend" })
 );
 
 // ─── AUTH: Signup ─────────────────────────────────────────────────────────────
-app.post("/make-server-b49a1e6e/auth/signup", async (c) => {
+app.post("/auth/signup", async (c) => {
   try {
     const body = await c.req.json();
     const { email, password, full_name } = body;
@@ -305,7 +306,7 @@ app.post("/make-server-b49a1e6e/auth/signup", async (c) => {
 });
 
 // ─── AUTH: Make First Admin (one-time bootstrap only) ────────────────────────
-app.post("/make-server-b49a1e6e/auth/make-first-admin", async (c) => {
+app.post("/auth/make-first-admin", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -336,7 +337,7 @@ app.post("/make-server-b49a1e6e/auth/make-first-admin", async (c) => {
 });
 
 // ─── PROFILE: Get Own ─────────────────────────────────────────────────────────
-app.get("/make-server-b49a1e6e/profile", async (c) => {
+app.get("/profile", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -365,7 +366,7 @@ app.get("/make-server-b49a1e6e/profile", async (c) => {
 });
 
 // ─── PROFILE: Update Own (full_name and unit ONLY) ───────────────────────────
-app.put("/make-server-b49a1e6e/profile", async (c) => {
+app.put("/profile", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -403,7 +404,7 @@ app.put("/make-server-b49a1e6e/profile", async (c) => {
 });
 
 // ─── PROFILES: Get All (admin only) ──────────────────────────────────────────
-app.get("/make-server-b49a1e6e/profiles", async (c) => {
+app.get("/profiles", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -422,7 +423,7 @@ app.get("/make-server-b49a1e6e/profiles", async (c) => {
 });
 
 // ─── PROFILES: Get by Unit (admin or coordinator of that unit) ────────────────
-app.get("/make-server-b49a1e6e/profiles/unit/:unit", async (c) => {
+app.get("/profiles/unit/:unit", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -455,7 +456,7 @@ app.get("/make-server-b49a1e6e/profiles/unit/:unit", async (c) => {
 });
 
 // ─── PROFILES: Update Role (admin only) ──────────────────────────────────────
-app.put("/make-server-b49a1e6e/profiles/:userId/role", async (c) => {
+app.put("/profiles/:userId/role", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -497,7 +498,7 @@ app.put("/make-server-b49a1e6e/profiles/:userId/role", async (c) => {
 });
 
 // ─── PROFILES: Update Status (admin only) ────────────────────────────────────
-app.put("/make-server-b49a1e6e/profiles/:userId/status", async (c) => {
+app.put("/profiles/:userId/status", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -526,7 +527,7 @@ app.put("/make-server-b49a1e6e/profiles/:userId/status", async (c) => {
 });
 
 // ─── MEMBERSHIP: Create Request ────────────────────────────────────────────────
-app.post("/make-server-b49a1e6e/membership-requests", async (c) => {
+app.post("/membership-requests", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -572,7 +573,7 @@ app.post("/make-server-b49a1e6e/membership-requests", async (c) => {
 });
 
 // ─── MEMBERSHIP: Get Requests (role-filtered) ─────────────────────────────────
-app.get("/make-server-b49a1e6e/membership-requests", async (c) => {
+app.get("/membership-requests", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -599,7 +600,7 @@ app.get("/make-server-b49a1e6e/membership-requests", async (c) => {
 });
 
 // ─── MEMBERSHIP: Approve or Reject ────────────────────────────────────────────
-app.put("/make-server-b49a1e6e/membership-requests/:id", async (c) => {
+app.put("/membership-requests/:id", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -654,7 +655,7 @@ app.put("/make-server-b49a1e6e/membership-requests/:id", async (c) => {
 });
 
 // ─── ANNOUNCEMENTS: Get (role-filtered) ──────────────────────────────────────
-app.get("/make-server-b49a1e6e/announcements", async (c) => {
+app.get("/announcements", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -681,7 +682,7 @@ app.get("/make-server-b49a1e6e/announcements", async (c) => {
 });
 
 // ─── ANNOUNCEMENTS: Create ────────────────────────────────────────────────────
-app.post("/make-server-b49a1e6e/announcements", async (c) => {
+app.post("/announcements", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -733,7 +734,7 @@ app.post("/make-server-b49a1e6e/announcements", async (c) => {
 });
 
 // ─── ANNOUNCEMENTS: Update ────────────────────────────────────────────────────
-app.put("/make-server-b49a1e6e/announcements/:id", async (c) => {
+app.put("/announcements/:id", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);
@@ -778,7 +779,7 @@ app.put("/make-server-b49a1e6e/announcements/:id", async (c) => {
 });
 
 // ─── ANNOUNCEMENTS: Delete ────────────────────────────────────────────────────
-app.delete("/make-server-b49a1e6e/announcements/:id", async (c) => {
+app.delete("/announcements/:id", async (c) => {
   try {
     const user = await getAuthUser(c.req.header("Authorization"));
     if (!user) return c.json({ error: "Unauthorized" }, 401);

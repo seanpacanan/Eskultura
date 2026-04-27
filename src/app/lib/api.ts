@@ -1,6 +1,6 @@
 import { projectId, publicAnonKey } from "/utils/supabase/info";
 
-const BASE_URL = `https://${projectId}.supabase.co/functions/v1/make-server-b49a1e6e`;
+const BASE_URL = `https://${projectId}.supabase.co/functions/v1/eskultura`;
 
 // ─── Types (mirrored from server) ─────────────────────────────────────────────
 export type Role = "admin" | "coordinator" | "viewer";
